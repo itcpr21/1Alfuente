@@ -5,6 +5,16 @@
  */
 package registration;
 
+import static confegurator.NewClass.conUrl;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author HP
@@ -125,8 +135,27 @@ public class registration extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LbuttonActionPerformed
-      
-        
+    String uname = UField.getText();
+    String upass =  new String(PField.getPassword());
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(conUrl);
+            String query = "Select * from user where Username = ? and Password =?;";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, uname);
+            pstmt.setString(2, upass);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+           frame f = new frame();
+           f.setVisible(true);
+            }else{
+            JOptionPane.showMessageDialog(rootPane, "Incorrect Password or Username","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(registration.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(registration.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_LbuttonActionPerformed
 
     private void PFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PFieldActionPerformed
@@ -175,9 +204,9 @@ r.setVisible(true);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Lbutton;
-    private javax.swing.JPasswordField PField;
+    public javax.swing.JPasswordField PField;
     private javax.swing.JButton Rbutton;
-    private javax.swing.JTextField UField;
+    public javax.swing.JTextField UField;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

@@ -5,6 +5,8 @@
  */
 package confegurator;
 
+import registration.registration;
+
 /**
  *
  * @author HP
@@ -12,4 +14,5 @@ package confegurator;
 public class NewClass {
     public static String conUrl ="jdbc:mysql://localhost/alfuente21?"
             + "user=root&password=";
+   
 }
