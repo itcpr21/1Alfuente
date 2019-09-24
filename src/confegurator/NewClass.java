@@ -5,7 +5,7 @@
  */
 package confegurator;
 
-import registration.registration;
+import registration.login;
 
 /**
  *
