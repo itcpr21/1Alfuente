@@ -174,7 +174,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_LbuttonActionPerformed
 
     private void PFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PFieldActionPerformed
-        // TODO add your handling code here:
+LbuttonActionPerformed(evt);       // TODO add your handling code here:
     }//GEN-LAST:event_PFieldActionPerformed
 
     private void RbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RbuttonActionPerformed

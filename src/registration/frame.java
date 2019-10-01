@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +32,7 @@ public class frame extends javax.swing.JFrame {
   public frame(String uname) {
         initComponents();
         txtlabel.setText("Welcome "+uname);
+        this.setLocationRelativeTo(null);
         a();
     }
     /**
@@ -48,11 +50,11 @@ public class frame extends javax.swing.JFrame {
         txtlabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        protable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         txtfield = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        dproduct = new javax.swing.JButton();
 
         tableproduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,7 +77,7 @@ public class frame extends javax.swing.JFrame {
         txtlabel.setForeground(new java.awt.Color(255, 255, 255));
         txtlabel.setText("WELCOME!!! ");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        protable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -94,8 +96,8 @@ public class frame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
+        protable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(protable);
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton1.setText("Add Product");
@@ -113,11 +115,11 @@ public class frame extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton3.setText("Delete");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        dproduct.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        dproduct.setText("Delete");
+        dproduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                dproductActionPerformed(evt);
             }
         });
 
@@ -140,7 +142,7 @@ public class frame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,11 +158,11 @@ public class frame extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dproduct)
+                    .addComponent(jButton1))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -181,7 +183,7 @@ public class frame extends javax.swing.JFrame {
       AddFrame r = new AddFrame();
       r.setLocationRelativeTo(null);
       r.setVisible(true);
-      
+      this.setVisible(false);
       
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -189,9 +191,28 @@ public class frame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void dproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dproductActionPerformed
+       int r = protable.getSelectedRow();
+       
+       if(r == -1){
+           JOptionPane.showConfirmDialog(rootPane, "Please Selesct A Row to be deleted","Error",JOptionPane.WARNING_MESSAGE);
+       }else{
+           String name = protable.getValueAt(r, 1).toString();
+           int x = JOptionPane.showConfirmDialog(rootPane, "ARE YOU SURE YOU WANT TO DELETE THIS RECORD?",
+                   "CONFIRMATION",JOptionPane.OK_CANCEL_OPTION);
+           if(x == JOptionPane.OK_OPTION){
+               int y = JOptionPane.showConfirmDialog(rootPane,"The Product "+name+" will be Deleted","Warning",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+               if(y == JOptionPane.YES_NO_OPTION){  
+                   String sid = protable.getValueAt(r, 0).toString();
+                   AddProduct ap = new AddProduct();
+                     ap.dproduct(sid);
+                     a();
+               }
+           }
+           
+         
+       }
+    }//GEN-LAST:event_dproductActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,14 +255,15 @@ public class frame extends javax.swing.JFrame {
             PreparedStatement pstmt = con.prepareStatement("select * from addproduct order by id desc");
             ResultSet rs = pstmt.executeQuery();
             int row = 0;
-            DefaultTableModel tbl = (DefaultTableModel) tableproduct.getModel();
+            DefaultTableModel tbl = (DefaultTableModel) protable.getModel();
             while (rs.next()){
                 tbl.addRow(new Object[]{});
-                tableproduct.setValueAt(rs.getString("Id"), row, 0);
-                tableproduct.setValueAt(rs.getString("Product_name"), row, 1);
-                tableproduct.setValueAt(rs.getString("Quantity"), row, 2);
-                tableproduct.setValueAt(rs.getString("Price"), row, 3);
+               protable.setValueAt(rs.getString("Id"), row, 0);
+               protable.setValueAt(rs.getString("Product_name"), row, 1);
+                protable.setValueAt(rs.getString("Quantity"), row, 2);
+                protable.setValueAt(rs.getString("Price"), row, 3);
                         row++;
+                
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(frame.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,14 +271,14 @@ public class frame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton dproduct;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable protable;
     private javax.swing.JTable tableproduct;
     private javax.swing.JTextField txtfield;
     private javax.swing.JLabel txtlabel;

@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  * @author HP
  */
 public class AddProduct {
-  
+  frame f = new frame();
    public int ap(String rq, int wq, double vr) {
       int r = 0;
       
@@ -38,6 +38,26 @@ public class AddProduct {
        
       return r;
   }
-   
+   public void dproduct(String id){
+     try{
+         Class.forName("com.mysql.jdbc.Driver");
+         Connection c = DriverManager.getConnection(conUrl);
+         String q ="Delete from addproduct where Id = ?";
+         PreparedStatement p = c.prepareStatement(q);
+         p.setString(1, id);
+         p.executeUpdate();
+         JOptionPane.showMessageDialog(f, "Successfully Deleted","Successfull", JOptionPane.INFORMATION_MESSAGE); 
+         
+     } catch (ClassNotFoundException ex) {
+           Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        
+   }
+
+    void protable(String sid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
